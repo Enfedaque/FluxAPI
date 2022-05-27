@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,26 +14,23 @@ import java.time.LocalDate;
 @AllArgsConstructor //Creo constructor completo
 @NoArgsConstructor //Creo constructor vacio
 //Le indico a la bbdd que es una tabla
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Document(value = "users")
 public class usuarios {
 
     //Le indico las columnas y el ID autogenerado
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column
+    private String id;
+    @Field
     private String nombre;
-    @Column
+    @Field
     private String apellido;
-    @Column
+    @Field
     private String DNI;
-    @Column
+    @Field
     private String email;
-    @Column
+    @Field
     private String telefono;
-    @Column(name = "fecha_nacimiento")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @Field
     private LocalDate fechaNac;
 
     
@@ -75,11 +74,11 @@ public class usuarios {
         this.email = email;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

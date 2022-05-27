@@ -7,6 +7,7 @@ import com.enfedaque.fluxAPI.domain.facturas;
 import com.enfedaque.fluxAPI.domain.vehiculos;
 import com.enfedaque.fluxAPI.excepciones.facturasNotFoundException;
 import com.enfedaque.fluxAPI.excepciones.vehiculoNotFoundException;
+import com.enfedaque.fluxAPI.repository.vehiculosRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,6 @@ public class facturasServiceImplem implements facturasService {
 
     @Override
     public facturas addFactura(facturasDTO facturasDTO) throws vehiculoNotFoundException {
-        Object vehiculoNotFoundException;
         vehiculos vehiculo=vehiculosRepository.findById(facturasDTO.getVehiculo())
                 .orElseThrow(vehiculoNotFoundException::new);
         ModelMapper mapper=new ModelMapper();
