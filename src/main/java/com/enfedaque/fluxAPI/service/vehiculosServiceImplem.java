@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class vehiculosServiceImplem implements vehiculosService{
+public class vehiculosServiceImplem implements vehiculosService {
 
     @Autowired
     private com.enfedaque.fluxAPI.repository.vehiculosRepository vehiculosRepository;

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -27,28 +29,27 @@ public class usuariosController {
 
     //Mostrar todos los usuarios
     @GetMapping("/Usuarios") //Forma de buscarlo en el navegador
-    public List<usuarios> getUsuarios(){
+    public Flux<usuarios> getUsuarios(){
         logger.info("Inicio getUsuarios");
-        List<usuarios> usuarios=miUsuariosService.findAll();
+        Flux<usuarios> usuarios=miUsuariosService.findAll();
         logger.info("Fin operacion de mostrado de usuarios");
         return usuarios;
     }
 
     //Buscar un usuario segun ID
     @GetMapping("/Usuarios/{id}")
-    public usuarios getUsuario(@PathVariable long id) throws usuarioNotFoundException {
+    public Mono<usuarios> getUsuario(@PathVariable long id) throws usuarioNotFoundException {
         logger.info("Inicio busqueda de usuario con id: " + id);
-        usuarios miUsuarios=miUsuariosService.findById(id);
+        Mono<usuarios> miUsuarios=miUsuariosService.findById(id);
         logger.info("Fin de la operacion de busqueda");
         return miUsuarios;
     }
 
     //BORRAR un usuario por el id
     @DeleteMapping("/Usuarios/{id}")
-    public usuarios deleteUsuario(@PathVariable long id) throws usuarioNotFoundException {
+    public Mono<usuarios> deleteUsuario(@PathVariable long id) throws usuarioNotFoundException {
         logger.info("Inicio deleteUsuario");
-        usuarios miUsuario=miUsuariosService.deleteUsuario(id);
-        logger.info("Usuario con id: " + miUsuario.getId() + " eliminado. FIN de la operación");
+        Mono<usuarios> miUsuario=miUsuariosService.deleteUsuario(id);
         return miUsuario;
     }
 
@@ -59,18 +60,18 @@ public class usuariosController {
 
     //Buscar usuarios por el nombre con JPQL
     @GetMapping("/BusquedaUsuarios/{nombre}")
-    public List<usuarios> findByNombre(@PathVariable String nombre){
+    public Flux<usuarios> findByNombre(@PathVariable String nombre){
         logger.info("Inicio findByNombre");
-        List<usuarios> usuarios=miUsuariosService.findByNombre(nombre);
+        Flux<usuarios> usuarios=miUsuariosService.findByNombre(nombre);
         logger.info("Fin operacion de mostrado de usuarios");
         return usuarios;
     }
 
     //Buscar email y DNI por el nombre y telefono con SQL NATIVA
     @GetMapping("/BusquedaUsuarios/{nombre}/{telefono}")
-    public List<String> busquedaVariada(@PathVariable String nombre, @PathVariable String telefono){
+    public Flux<String> busquedaVariada(@PathVariable String nombre, @PathVariable String telefono){
         logger.info("Inicio busquedaVariada");
-        List<String> usuarios=miUsuariosService.busquedaVariada(nombre, telefono);
+        Flux<String> usuarios=miUsuariosService.busquedaVariada(nombre, telefono);
         logger.info("Fin operacion de mostrado de usuarios");
         return usuarios;
     }

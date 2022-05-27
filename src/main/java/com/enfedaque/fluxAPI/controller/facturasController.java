@@ -7,7 +7,6 @@ import com.enfedaque.fluxAPI.excepciones.facturasNotFoundException;
 import com.enfedaque.fluxAPI.excepciones.respuestaErrores;
 import com.enfedaque.fluxAPI.excepciones.usuarioNotFoundException;
 import com.enfedaque.fluxAPI.excepciones.vehiculoNotFoundException;
-import com.enfedaque.fluxAPI.service.facturasService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
