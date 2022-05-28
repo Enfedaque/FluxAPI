@@ -18,8 +18,6 @@ public interface usuariosService {
     Flux<usuarios> findAll();
     Mono<usuarios> findById(long id) throws usuarioNotFoundException;
     Mono<usuarios> deleteUsuario(long id) throws usuarioNotFoundException;
-    Mono<usuarios> addUsuario(usuarios usuario);
-    Mono<usuarios> modifyUsuario(usuarios usuario, long id) throws usuarioNotFoundException;
 
     Flux<usuarios> findByNombre(String nombre);
 

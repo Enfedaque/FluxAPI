@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
 
@@ -14,18 +18,26 @@ public class clientesDTO {
     El DTO es la forma que tengo de pasarle los datos en JSON, ya que no le puedo pasar un objeto entero
     como atricuto por ejemplo
      */
+    @NotNull
     private String nombre;
+    @NotNull
     private String apellido;
+    @Email
     private String email;
+    @NotNull
     private String telefono;
+    @Pattern(regexp = "[0-9]{8}[A-Z]")
     private String DNI;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaNac;
     private boolean particular;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaAlta;
+    @Positive
     private int presupuestoEnReparaciones;
+    @Positive
     private float estatura;
+    @NotNull
     private boolean empresa;
     private String nombreEmpresa;
 

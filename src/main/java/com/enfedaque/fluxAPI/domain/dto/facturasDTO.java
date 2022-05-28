@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Data
@@ -13,8 +15,11 @@ import java.time.LocalDate;
 
 public class facturasDTO {
 
+    @NotNull
     private String nombrePropietario;
+    @NotNull
     private boolean isEmpresa;
+    @PositiveOrZero
     private float precio;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaFactura;

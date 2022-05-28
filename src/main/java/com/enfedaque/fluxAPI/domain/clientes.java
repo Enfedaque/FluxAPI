@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,15 +22,19 @@ import java.util.List;
 public class clientes extends usuarios {
 
     @Column
+    @NotNull
     private boolean particular;
     @Column(name = "fecha_alta")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaAlta;
     @Column(name="presupuesto")
+    @Positive
     private int presupuesto; //No se que dato puedo guardar sino como int en un cliente...
     @Column
+    @Positive
     private float estatura; //No se que dato poder coger, no hay nada... para float
     @Column
+    @NotNull
     private boolean empresa;
     @Column(name = "nombre_empresa")
     private String nombreEmpresa;
