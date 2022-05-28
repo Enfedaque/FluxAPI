@@ -10,9 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class empleadosController {
@@ -24,7 +29,7 @@ public class empleadosController {
 
     //AÑADIR nuevo empleado
     @PostMapping("/Empleados")
-    public empleados addEmpleado(@RequestBody empleados empleado){
+    public empleados addEmpleado(@Valid @RequestBody empleados empleado){
         logger.info("Inicio AddEmpleado");
         empleados miEmpleado= miEmpleadoService.addEmpleado(empleado);
         logger.info("Empleado con id: " + miEmpleado.getId() + " añadido. FIN de la operación");
@@ -42,7 +47,7 @@ public class empleadosController {
 
     //MODIFICAR un cliente por el id
     @PutMapping("/Empleados/{id}")
-    public empleados modifyEmpleado(@RequestBody empleados empleado, @PathVariable long id)
+    public empleados modifyEmpleado(@Valid @RequestBody empleados empleado, @PathVariable long id)
             throws empleadoNotFoundException {
         logger.info("Inicio modificar empleado con id: " + id);
         empleados empleados=miEmpleadoService.modifyEmpleado(empleado, id);
@@ -123,5 +128,15 @@ public class empleadosController {
         respuestaErrores miRespuestaErrores=new respuestaErrores("x", "Error en el lado servidor");
         logger.error(exception.getMessage(), exception);
         return new ResponseEntity<>(miRespuestaErrores, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleException(MethodArgumentNotValidException manve){
+        Map<String, String> error=new HashMap<>();
+        manve.getBindingResult().getAllErrors().forEach(errores -> {
+            error.put(((FieldError) errores).getField(), errores.getDefaultMessage());
+        });
+        return error;
     }
 }

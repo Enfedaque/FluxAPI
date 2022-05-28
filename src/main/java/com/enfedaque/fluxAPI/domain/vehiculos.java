@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Data
@@ -37,10 +39,13 @@ public class vehiculos {
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaSalida;
     @Column
+    @NotEmpty
     private String matricula;
     @Column
+    @Min(value = 1)
     private float kilometros;
     @Column
+    @Min(value = 1)
     private int antiguedad;
     @Column
     private boolean unicoPropietario;

@@ -12,10 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class vehiculosController {
@@ -29,7 +34,7 @@ public class vehiculosController {
 
     //AÑADIR nuevo vehiculo
     @PostMapping("/Vehiculos")
-    public vehiculos addVehiculo(@RequestBody vehiculosDTO vehiculosDTO) throws clienteNotFoundException, facturasNotFoundException {
+    public vehiculos addVehiculo(@Valid @RequestBody vehiculosDTO vehiculosDTO) throws clienteNotFoundException, facturasNotFoundException {
         logger.info("Inicio AddVehiculo");
         vehiculos miVehiculo= vehiculosService.addVehiculos(vehiculosDTO);
         logger.info("Vehiculo con id: " + miVehiculo.getVehiculosID() + " añadido. FIN de la operación");
@@ -48,7 +53,7 @@ public class vehiculosController {
     //MODIFICAR un vehiculo por el id
     //TODO Terminado, sin probar
     @PutMapping("/Vehiculos/{id}")
-    public vehiculos modifyVehiculo(@RequestBody vehiculosDTO vehiculosDTO, @PathVariable long id)
+    public vehiculos modifyVehiculo(@Valid @RequestBody vehiculosDTO vehiculosDTO, @PathVariable long id)
             throws vehiculoNotFoundException, clienteNotFoundException {
         logger.info("Inicio modificar vehiculo con id: " + id);
         vehiculos miVehiculo= vehiculosService.modifyVehiculos(vehiculosDTO, id);
@@ -129,5 +134,15 @@ public class vehiculosController {
         respuestaErrores miRespuestaErrores=new respuestaErrores("x", "Error en el lado servidor");
         logger.error(exception.getMessage(), exception);
         return new ResponseEntity<>(miRespuestaErrores, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleException(MethodArgumentNotValidException manve){
+        Map<String, String> error=new HashMap<>();
+        manve.getBindingResult().getAllErrors().forEach(errores -> {
+            error.put(((FieldError) errores).getField(), errores.getDefaultMessage());
+        });
+        return error;
     }
 }

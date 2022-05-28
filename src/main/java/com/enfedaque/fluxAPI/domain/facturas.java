@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Data
@@ -19,10 +21,13 @@ public class facturas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long numFactura;
     @Column
+    @NotNull
     private String nombrePropietario;
     @Column(name = "is_empresa")
+    @NotNull
     private boolean isEmpresa;
     @Column
+    @PositiveOrZero
     private float precio;
     @Column(name = "fecha_factura")
     @JsonFormat(pattern = "dd-MM-yyyy")

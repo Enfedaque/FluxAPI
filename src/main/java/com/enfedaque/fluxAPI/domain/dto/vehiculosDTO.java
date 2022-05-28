@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Data
@@ -18,8 +20,11 @@ public class vehiculosDTO {
     private LocalDate fechaEntrada;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaSalida;
+    @NotEmpty
     private String matricula;
+    @Min(value = 1)
     private float kilometros;
+    @Min(value = 1)
     private int antiguedad;
     private boolean unicoPropietario;
 

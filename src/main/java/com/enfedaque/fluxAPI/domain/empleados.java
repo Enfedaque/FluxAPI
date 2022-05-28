@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Data
@@ -20,12 +23,16 @@ public class empleados extends usuarios {
     // registrarse un nuevo empleado que no se encargue de coches
 
     @Column
+    @NotNull
     private String puesto;
     @Column
+    @NotEmpty
     private String departamento;
     @Column
+    @PositiveOrZero
     private float salario;
     @Column(name="operarios_al_cargo")
+    @PositiveOrZero
     private int operariosAlCargo;
     @Column(name="is_jefe_de_taller")
     private boolean isJefeDeTaller;

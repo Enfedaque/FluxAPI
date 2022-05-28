@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Data //Con esta anotacion de lombock hago que todos los atributos tengasn get y set
@@ -21,14 +24,19 @@ public class usuarios {
     @Id
     private String id;
     @Field
+    @NotNull
     private String nombre;
     @Field
+    @NotNull
     private String apellido;
     @Field
+    @Pattern(regexp = "[0-9]{8}[A-Z]")
     private String DNI;
     @Field
+    @Email
     private String email;
     @Field
+    @NotNull
     private String telefono;
     @Field
     private LocalDate fechaNac;

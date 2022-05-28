@@ -12,9 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class facturasController {
@@ -33,7 +38,7 @@ public class facturasController {
     }
 
     @PostMapping("/Facturas")
-    public facturas addFactura(@RequestBody facturasDTO facturasDTO) throws vehiculoNotFoundException {
+    public facturas addFactura(@Valid @RequestBody facturasDTO facturasDTO) throws vehiculoNotFoundException {
         logger.info("Inicio AddFactura");
         facturas miFactura= facturasService.addFactura(facturasDTO);
         logger.info("Factura con id: " + miFactura.getNumFactura() + " añadida. FIN de la operación");
@@ -49,7 +54,7 @@ public class facturasController {
     }
 
     @PutMapping("/Facturas/{id}")
-    public facturas modifyFactura(@RequestBody facturasDTO facturaDTO, @PathVariable long id)
+    public facturas modifyFactura(@Valid @RequestBody facturasDTO facturaDTO, @PathVariable long id)
             throws usuarioNotFoundException, facturasNotFoundException, vehiculoNotFoundException {
         logger.info("Inicio modificar factura con id: " + id);
         facturas miFactura= facturasService.modifyFactura(facturaDTO, id);
@@ -120,5 +125,15 @@ public class facturasController {
         respuestaErrores miRespuestaErrores=new respuestaErrores("x", "Error en el lado servidor");
         logger.error(exception.getMessage(), exception);
         return new ResponseEntity<>(miRespuestaErrores, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleException(MethodArgumentNotValidException manve){
+        Map<String, String> error=new HashMap<>();
+        manve.getBindingResult().getAllErrors().forEach(errores -> {
+            error.put(((FieldError) errores).getField(), errores.getDefaultMessage());
+        });
+        return error;
     }
 }
